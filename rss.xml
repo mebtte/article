@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  version="2.0"
+>
+  <channel>
+    <title>
+      <![CDATA[Answer]]>
+    </title>
+    <description>
+      <![CDATA[MEBTTE&#39;s Writing]]>
+    </description>
+    <link>https://mebtte.github.io/article</link>
+    <lastBuildDate>2021-01-26T06:06:49.796Z</lastBuildDate>
+    
+      <item>
+        <title>
+          <![CDATA[浏览器和 JavaScript 的一些新特性]]>
+        </title>
+        <description>
+          <![CDATA[## CookieStore API  目前, 浏览器可用的存储方式有 `cookie`/`sessionStorage`/`localStorage`/`IndexedDB`, 后三者都暴露了十分友好的 API 供开发者访问, 只有 cookie 例外. 回想一下, 平时我们都是怎么操作 cook...]]>
+        </description>
+        <link>https://mebtte.github.io/article/new_features_of_browser_and_js_202101</link>
+        <guid isPermaLink="false">new_features_of_browser_and_js_202101</guid>
+        <pubDate>2021-01-25T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[useCallback 的误区]]>
+        </title>
+        <description>
+          <![CDATA[![https://reactjs.org/docs/hooks-reference.html#usecallback](./use_callback_define.png)  `useCallback` 接受一个回调函数和一个依赖数组作为参数, 当依赖数组的每一项都不变的情况下返回缓存过后的回调函...]]>
+        </description>
+        <link>https://mebtte.github.io/article/use_callback_misunderstanding</link>
+        <guid isPermaLink="false">use_callback_misunderstanding</guid>
+        <pubDate>2020-10-30T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[从蚂蚁森林说起]]>
+        </title>
+        <description>
+          <![CDATA[假如你是一个支付宝的开发, 一天产品提出了一个叫做`蚂蚁果园`功能需求  &gt; 给每个用户分配一棵虚拟的苹果树, 当使用支付宝进行一笔线下付款后, 产生一份能量. 用户可以收集能量, 果树随着能量值增加而长大, 当能量达到某个值的时候, 用户可以消耗能量值兑换苹果一份.  你分析了一下这个功能, 画了...]]>
+        </description>
+        <link>https://mebtte.github.io/article/talking_from_ant_forest</link>
+        <guid isPermaLink="false">talking_from_ant_forest</guid>
+        <pubDate>2020-07-12T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[styled-components 与 React Hooks 升级指北]]>
+        </title>
+        <description>
+          <![CDATA[## styled-components  在 react 应用中样式使用 css 文件存在几个痛点:  1. 需要额外的样式文件, 比如一个 A 组件往往附带了一个 A.(css|less|scss|styl) 的样式文件, 而且样式与结构和逻辑分离不符合组件化的思想 2. 为了防止样式互相污染,...]]>
+        </description>
+        <link>https://mebtte.github.io/article/styled_components_and_update_react_to_hooks</link>
+        <guid isPermaLink="false">styled_components_and_update_react_to_hooks</guid>
+        <pubDate>2020-03-28T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[在 React 中使用事件分离状态]]>
+        </title>
+        <description>
+          <![CDATA[最近在 React 项目遇到了一个问题, Web App 有一个登录弹窗, 在没有登录的情况下进行一些需要用户信息的操作, 首先会弹出登录弹窗.  然而这种操作分布在各个组件, 所以在 redux 保留一个变量 `loginDialogVisible`, 通过 `action` 控制登录弹窗是否展示...]]>
+        </description>
+        <link>https://mebtte.github.io/article/split_react_state_by_event</link>
+        <guid isPermaLink="false">split_react_state_by_event</guid>
+        <pubDate>2020-01-15T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[CSS 变量]]>
+        </title>
+        <description>
+          <![CDATA[基本所有的 CSS 预处理器都支持变量的特性，比如 SASS：  ```scss $color: white;  p {   color: $color; }  button {   color: $color; } ```  支持将一个复用属性赋值给变量，然后在其他地方可以使用这个变量，当需要修改...]]>
+        </description>
+        <link>https://mebtte.github.io/article/css_variable</link>
+        <guid isPermaLink="false">css_variable</guid>
+        <pubDate>2019-10-23T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[如何处理 RESTFUL 数据异常导致的前端错误]]>
+        </title>
+        <description>
+          <![CDATA[最近一段时间监控平台收集了很多 JS 错误，大部分都是`TypeError`  ```txt Uncaught TypeError: Cannot read property &#39;xxx&#39; of null ```  经过排查后发现基本都是因为接口数据错误的导致，比如  ```js // 正常数据 { ...]]>
+        </description>
+        <link>https://mebtte.github.io/article/handle_restful_api_error</link>
+        <guid isPermaLink="false">handle_restful_api_error</guid>
+        <pubDate>2019-05-30T00:00:00.000Z</pubDate>
+      </item>
+    
+      <item>
+        <title>
+          <![CDATA[基于 Node.js 的 WebFont 解决方案]]>
+        </title>
+        <description>
+          <![CDATA[CSS3 中的`@font-face`提供了自定义字体的功能，可以使网页不局限于用户系统中的字体。 然而理想很丰满，现实很骨感。 像英文这类的语言来说，字体文件包含非常少的字符，所以一个字体文件会非常的小。 我随便下载了几份英文字体  ![英文字体大小](./english_font_size.pn...]]>
+        </description>
+        <link>https://mebtte.github.io/article/web_font_solution_by_node</link>
+        <guid isPermaLink="false">web_font_solution_by_node</guid>
+        <pubDate>2019-03-10T00:00:00.000Z</pubDate>
+      </item>
+    
+  </channel>
+</rss>

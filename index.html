@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="zh-cn"><head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="mebtte">
+<meta name="keywords" content="HTML,CSS,JavaScript,Web">
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-SR7NFX6EK6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SR7NFX6EK6');
+  </script>
+
+
+<!-- open graph -->
+<meta property="og:type" content="website">
+<meta property="og:image" content="/article/6ed5faa0573b2a5a9d47232c9a71fb88.png">
+
+<link rel="shortcut icon" type="image/png" href="/article/6ed5faa0573b2a5a9d47232c9a71fb88.png">
+<link rel="sitemap" type="application/xml" href="/article/sitemap.xml">
+
+<link rel="preload" href="/article/dc2debd6c1aa714de8960f48d6f6f1d1.ttf" as="font" crossorigin="anonymous">
+<link rel="preload" href="/article/341c6a5085cbcbb5bb5d0287fe9310b9.ttf" as="font" crossorigin="anonymous">
+
+  <style>
+  @font-face {
+    font-family: common_font;
+    src: url(/article/341c6a5085cbcbb5bb5d0287fe9310b9.ttf);
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    --content-max-width: 840px;
+
+    --primary-color: rgb(237, 106, 94);
+
+    --normal-color: #333;
+    --secondary-color: #888;
+    --tertiary-color: #ddd;
+    --backgroud: rgb(244, 244, 244);
+
+    --border-radius: 2px;
+    --transition-duration: 0.3s;
+
+    background-color: var(--backgroud);
+    transition: background-color var(--transition-duration);
+  }
+
+  body.dark-theme {
+    --normal-color: #eee;
+    --secondary-color: #888;
+    --tertiary-color: #444;
+    --backgroud: #333;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const darkTheme = window.localStorage.getItem('dark_theme');
+    if (darkTheme) {
+      document.body.classList.remove('light-theme');
+      document.body.classList.add('dark-theme');
+    }
+  })
+</script>
+
+
+  <title>Answer - MEBTTE's Writing</title>
+  <meta name="description" content="MEBTTE's Writing">
+
+  <link rel="preload" href="/article/b8daf4f70bf64f5a3c7d5ffdffdf7071.ttf" as="font" crossorigin="anonymous">
+  <style>
+    @font-face {
+      font-family: article_title;
+      src: url(/article/b8daf4f70bf64f5a3c7d5ffdffdf7071.ttf);
+    }
+
+    .article-list {
+      max-width: var(--content-max-width);
+      margin: 40px auto;
+      padding: 0 30px;
+    }
+    .article-item {
+      list-style: none;
+      display: block;
+      margin: 15px 0;
+    }
+    .article-title {
+      display: inline;
+      font-weight: normal;
+      margin: 0 10px 0 0;
+      padding: 0;
+      color: var(--primary-color);
+      font-size: 18px;
+      font-family: article_title;
+    }
+    .article-title > a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .article-title > a:hover {
+      text-decoration: underline;
+    }
+    .article-time {
+      display: inline-block;
+      font-size: 12px;
+      font-family: common_font;
+      color: var(--secondary-color);
+    }
+  </style>
+</head>
+
+<body class="light-theme">
+  <style>
+  @font-face {
+    font-family: title_font;
+    src: url(/article/dc2debd6c1aa714de8960f48d6f6f1d1.ttf);
+  }
+
+  .page-header {
+    max-width: var(--content-max-width);
+    margin: 40px auto;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  .page-header_title {
+    flex: 1;
+    min-width: 0;
+    font-size: 64px;
+    font-family: title_font;
+    margin: 0;
+  }
+
+  h1.page-header_title  {
+    color: var(--normal-color);
+  }
+
+  h2.page-header_title {
+    color: var(--primary-color);
+  }
+
+  .page-header_title > a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .theme-changer {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+  }
+
+  .page-header_icon {
+    display: block;
+    margin-left: 16px;
+    user-select: none;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .dark-theme .page-header_icon__light-theme {
+    display: none;
+  }
+
+  .light-theme .page-header_icon__dark-theme {
+    display: none;
+  }
+</style>
+
+<header class="page-header">
+  
+    <h1 class="page-header_title">
+      <a href="/article/">Answer</a>
+    </h1>
+  
+  <button class="theme-changer" type="button">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/c81f837b51ca388c1a54c51c5d0c6b15.png" alt="light theme">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/802654de2a9a0f0d2667e6aed83d682f.png" alt="dark theme">
+  </button>
+  <a href="/article/rss.xml">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/6594d1f64750503bee10571143bd5019.png" alt="rss">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/e31ad23031e5bcb34e8d4a424ba0c100.png" alt="rss">
+  </a>
+  <a href="https://github.com/mebtte/article">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/8a0ad2aed00666d6d2366358a4e6e9ad.png" alt="github">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/184c800e11079b13904f308161071b62.png" alt="github">
+  </a>
+</header>
+
+<script>
+  (() => {
+    const themeChanger = document.querySelector('.theme-changer');
+    themeChanger.addEventListener('click', () => {
+      if (document.body.classList.contains('dark-theme')) {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+        window.localStorage.removeItem('dark_theme');
+      } else {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+        window.localStorage.setItem('dark_theme', '1');
+      }
+    });
+  })()
+</script>
+
+  <ul class="article-list">
+    
+      <li class="article-item">
+        <h2 class="article-title">
+          <a href="/article/new_features_of_browser_and_js_202101">浏览器和 JavaScript 的一些新特性</a>
+        </h2>
+        <time class="article-time">2021-01-25</time>
+      </li>
+    
+      <li class="article-item">
+        <h2 class="article-title">
+          <a href="/article/use_callback_misunderstanding">useCallback 的误区</a>
+        </h2>
+        <time class="article-time">2020-10-30</time>
+      </li>
+    
+      <li class="article-item">
+        <h2 class="article-title">
+          <a href="/article/talking_from_ant_forest">从蚂蚁森林说起</a>
+        </h2>
+        <time class="article-time">2020-07-12</time>
+      </li>
+    
+      <li class="article-item">
+        <h2 class="article-title">
+          <a href="/article/styled_components_and_update_react_to_hooks">styled-components 与 React Hooks 升级指北</a>
+        </h2>
+        <time class="article-time">2020-03-28</time>
+      </li>
+    
+      <li class="article-item">
+        <h2 class="article-title">
+          <a href="/article/split_react_state_by_event">在 React 中使用事件分离状态</a>
+        </h2>
+        <time class="article-time">2020-01-15</time>
+      </li>
+    
+      <li class="article-item">
+        <h2 class="article-title">
+          <a href="/article/css_variable">CSS 变量</a>
+        </h2>
+        <time class="article-time">2019-10-23</time>
+      </li>
+    
+      <li class="article-item">
+        <h2 class="article-title">
+          <a href="/article/handle_restful_api_error">如何处理 RESTFUL 数据异常导致的前端错误</a>
+        </h2>
+        <time class="article-time">2019-05-30</time>
+      </li>
+    
+      <li class="article-item">
+        <h2 class="article-title">
+          <a href="/article/web_font_solution_by_node">基于 Node.js 的 WebFont 解决方案</a>
+        </h2>
+        <time class="article-time">2019-03-10</time>
+      </li>
+    
+  </ul>
+  <style>
+.page-footer{
+  font-size: 12px;
+  max-width: var(--content-max-width);
+  margin: 40px auto;
+  padding: 0 30px;
+  font-family: common_font;
+  color: var(--secondary-color);
+}
+
+.page-footer > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.page-footer > a:hover {
+  color: var(--primary-color);
+}
+</style>
+
+<footer class="page-footer">
+  <a href="https://github.com/mebtte/article/blob/master/LICENSE">©</a> 2021
+  <a href="https://mebtte.com">MEBTTE</a>
+</footer>
+
+
+
+
+</body></html>

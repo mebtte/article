@@ -1,0 +1,777 @@
+<!DOCTYPE html><html lang="zh-cn"><head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="mebtte">
+<meta name="keywords" content="HTML,CSS,JavaScript,Web">
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-SR7NFX6EK6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SR7NFX6EK6');
+  </script>
+
+
+<!-- open graph -->
+<meta property="og:type" content="website">
+<meta property="og:image" content="/article/6ed5faa0573b2a5a9d47232c9a71fb88.png">
+
+<link rel="shortcut icon" type="image/png" href="/article/6ed5faa0573b2a5a9d47232c9a71fb88.png">
+<link rel="sitemap" type="application/xml" href="/article/sitemap.xml">
+
+<link rel="preload" href="/article/dc2debd6c1aa714de8960f48d6f6f1d1.ttf" as="font" crossorigin="anonymous">
+<link rel="preload" href="/article/341c6a5085cbcbb5bb5d0287fe9310b9.ttf" as="font" crossorigin="anonymous">
+
+  <style>
+  @font-face {
+    font-family: common_font;
+    src: url(/article/341c6a5085cbcbb5bb5d0287fe9310b9.ttf);
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    --content-max-width: 840px;
+
+    --primary-color: rgb(237, 106, 94);
+
+    --normal-color: #333;
+    --secondary-color: #888;
+    --tertiary-color: #ddd;
+    --backgroud: rgb(244, 244, 244);
+
+    --border-radius: 2px;
+    --transition-duration: 0.3s;
+
+    background-color: var(--backgroud);
+    transition: background-color var(--transition-duration);
+  }
+
+  body.dark-theme {
+    --normal-color: #eee;
+    --secondary-color: #888;
+    --tertiary-color: #444;
+    --backgroud: #333;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const darkTheme = window.localStorage.getItem('dark_theme');
+    if (darkTheme) {
+      document.body.classList.remove('light-theme');
+      document.body.classList.add('dark-theme');
+    }
+  })
+</script>
+
+
+  <title>在 React 中使用事件分离状态 - Answer</title>
+  <meta name="description" content="最近在 React 项目遇到了一个问题, Web App 有一个登录弹窗, 在没有登录的情况下进行一些需要用户信息的操作, 首先会弹出登录弹窗.  然而这种操作分布在各个组件, 所以在 redux 保留一个变量 `loginDialogVisible`, 通过 `action` 控制登录弹窗是否展示......">
+  <meta property="og:description" content="最近在 React 项目遇到了一个问题, Web App 有一个登录弹窗, 在没有登录的情况下进行一些需要用户信息的操作, 首先会弹出登录弹窗.  然而这种操作分布在各个组件, 所以在 redux 保留一个变量 `loginDialogVisible`, 通过 `action` 控制登录弹窗是否展示......">
+
+  <link rel="preload" href="/article/e56af7c74c80e25ecccd4e45e31ce927.ttf" as="font" crossorigin="anonymous">
+  <style>
+    @font-face {
+      font-family: article_font_split_react_state_by_event;
+      src: url(/article/e56af7c74c80e25ecccd4e45e31ce927.ttf);
+    }
+    article {
+      font-family: article_font_split_react_state_by_event;
+    }
+  </style>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@5.2.0/distr/fira_code.min.css">
+  <link rel="stylesheet" href="/article/ece570de77ba673c17121d06fc929bd9.css">
+</head>
+
+<body class="light-theme">
+  <style>
+  @font-face {
+    font-family: title_font;
+    src: url(/article/dc2debd6c1aa714de8960f48d6f6f1d1.ttf);
+  }
+
+  .page-header {
+    max-width: var(--content-max-width);
+    margin: 40px auto;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  .page-header_title {
+    flex: 1;
+    min-width: 0;
+    font-size: 64px;
+    font-family: title_font;
+    margin: 0;
+  }
+
+  h1.page-header_title  {
+    color: var(--normal-color);
+  }
+
+  h2.page-header_title {
+    color: var(--primary-color);
+  }
+
+  .page-header_title > a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .theme-changer {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+  }
+
+  .page-header_icon {
+    display: block;
+    margin-left: 16px;
+    user-select: none;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .dark-theme .page-header_icon__light-theme {
+    display: none;
+  }
+
+  .light-theme .page-header_icon__dark-theme {
+    display: none;
+  }
+</style>
+
+<header class="page-header">
+  
+    <h2 class="page-header_title">
+      <a href="/article/">Answer</a>
+    </h2>
+  
+  <button class="theme-changer" type="button">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/c81f837b51ca388c1a54c51c5d0c6b15.png" alt="light theme">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/802654de2a9a0f0d2667e6aed83d682f.png" alt="dark theme">
+  </button>
+  <a href="/article/rss.xml">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/6594d1f64750503bee10571143bd5019.png" alt="rss">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/e31ad23031e5bcb34e8d4a424ba0c100.png" alt="rss">
+  </a>
+  <a href="https://github.com/mebtte/article">
+    <img class="page-header_icon page-header_icon__dark-theme" src="/article/8a0ad2aed00666d6d2366358a4e6e9ad.png" alt="github">
+    <img class="page-header_icon page-header_icon__light-theme" src="/article/184c800e11079b13904f308161071b62.png" alt="github">
+  </a>
+</header>
+
+<script>
+  (() => {
+    const themeChanger = document.querySelector('.theme-changer');
+    themeChanger.addEventListener('click', () => {
+      if (document.body.classList.contains('dark-theme')) {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+        window.localStorage.removeItem('dark_theme');
+      } else {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+        window.localStorage.setItem('dark_theme', '1');
+      }
+    });
+  })()
+</script>
+
+  <article>
+    <style>
+.article-header {
+  max-width: var(--content-max-width);
+  margin: 40px auto;
+  padding: 0 30px;
+}
+
+.article-title {
+  color: var(--normal-color);
+  font-size: 32px;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+.article-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.article-publish-time {
+  color: var(--secondary-color);
+  font-size: 14px;
+  font-family: common_font;
+}
+</style>
+
+<section class="article-header">
+  <h1 class="article-title">
+    <a href="/article/split_react_state_by_event">在 React 中使用事件分离状态</a>
+  </h1>
+  <time class="article-publish-time">2020-01-15</time>
+</section>
+
+    <style>
+  code {
+    font-family: 'Fira Code' !important;
+  }
+
+  article {
+    --article-space: 30px;
+  }
+
+  article a {
+    color: var(--normal-color);
+    text-decoration-color: var(--primary-color);
+  }
+
+  article h2, article h3, article h4, article h5, article h6 {
+    max-width: var(--content-max-width);
+    padding: 0 30px;
+    margin: 0 auto;
+    line-height: 1.5;
+    color: var(--normal-color);
+  }
+
+  article h2 {
+    margin-top: 28px;
+    font-size: 28px;
+  }
+
+  article h3 {
+    margin-top: 26px;
+    font-size: 25px;
+  }
+
+  article h4 {
+    margin-top: 24px;
+    font-size: 22px;
+  }
+
+  article h5 {
+    margin-top: 22px;
+    font-size: 19px;
+  }
+
+  article h6 {
+    margin-top: 20px;
+    font-size: 16px;
+  }
+
+  article p {
+    max-width: var(--content-max-width);
+    padding: 0 30px;
+    font-size: 16px;
+    margin: 15px auto;
+    line-height: 1.8;
+    color: var(--normal-color);
+  }
+
+  article p code {
+    padding: 0 4px;
+    border-radius: var(--border-radius);
+    background: rgba(237, 106, 94, 0.3);
+  }
+
+  article pre {
+    max-width: var(--content-max-width) !important;
+    margin: 15px auto !important;
+    font-size: 14px !important;
+    box-sizing: border-box;
+    border-radius: var(--border-radius) !important;
+    tab-size: 2 !important;
+    padding: 0 !important;
+  }
+
+  article pre code {
+    display: block;
+    margin: 20px 30px !important;
+    overflow: auto !important;
+    font-size: inherit !important;
+  }
+
+  article hr {
+    max-width: var(--content-max-width);
+    margin: 40px auto;
+    padding: 0 var(--article-space);
+    border: none;
+  }
+
+  article hr::after{
+    content: '';
+    display: block;
+    height: 1px;
+    background-color:var(--tertiary-color);
+  }
+
+  article blockquote {
+    max-width: var(--content-max-width);
+    padding: 0 var(--article-space);
+    margin: 15px auto;
+    position: relative;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--secondary-color);
+  }
+
+  .table-container {
+    max-width: var(--content-max-width);
+    padding: 0 30px;
+    margin: 15px auto;
+  }
+
+  .table-container table {
+    border-collapse: collapse;
+  }
+
+  .table-container td {
+    font-size: 14px;
+    color: var(--normal-color);
+    border: 1px solid var(--tertiary-color);
+    padding: 10px;
+  }
+
+  article blockquote::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 30px;
+    width: 3px;
+    height: 100%;
+    background-color: var(--primary-color);
+  }
+
+  article blockquote p {
+    font-size: 14px;
+    color: inherit;
+    max-width: unset;
+    padding: 0;
+    margin: 0 0 0 30px;
+  }
+
+  article ul,
+  article ol {
+    max-width: var(--content-max-width);
+    padding: 0 30px;
+    margin: 15px auto;
+    color: var(--normal-color);
+    line-height: 1.5;
+  }
+  
+  article ul li, article ol li {
+    display: block;
+    margin: 5px 0;
+    position: relative;
+  }
+
+  article ul li::before, article ol li::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: calc(50% - 2px);
+    left: -15px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--normal-color);
+  }
+
+  article figcaption {
+    font-size: 12px;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .figure-img {
+    max-width: var(--content-max-width);
+    padding: 0 30px;
+    margin: 15px auto;
+  }
+
+  .figure-img img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: var(--border-radius);
+  }
+
+  .figure-iframe {
+    width: 100%;
+    margin: 15px 0;
+  }
+
+  .figure-iframe iframe {
+    display: block;
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    height: 640px;
+    border: none;
+    border-radius: var(--border-radius);
+  }
+</style>
+
+<section>
+  <p>最近在 React 项目遇到了一个问题, Web App 有一个登录弹窗, 在没有登录的情况下进行一些需要用户信息的操作, 首先会弹出登录弹窗.</p>
+<p>然而这种操作分布在各个组件, 所以在 redux 保留一个变量 <code>loginDialogVisible</code>, 通过 <code>action</code> 控制登录弹窗是否展示.</p>
+<pre><code class="js language-js">// reducer
+import TYPE from 'path/type';
+
+export const showLoginDialog = () =&gt; ({
+  type: TYPE.SHOW_LOGIN_DIALOG,
+});
+
+export const hideLoginDialog = () =&gt; ({
+  type: TYPE.HIDE_LOGIN_DIALOG,
+});
+
+const initialState = {
+  // ...
+  loginDialogVisible: false,
+};
+
+export default (state = initialState, { type, payload }) =&gt; {
+  switch (type) {
+    // ...
+    case TYPE.SHOW_LOGIN_DIALOG:
+      return {
+        ...state,
+        loginDialogVisible: true,
+      };
+    case TYPE.HIDE_LOGIN_DIALOG:
+      return {
+        ...state,
+        loginDialogVisible: false,
+      };
+    // ...
+  }
+};
+</code></pre>
+<pre><code class="jsx language-jsx">// 登录弹窗
+import React from 'react';
+import { useSelector, shallowEqual } from 'react-redux';
+
+const LoginDialog = () =&gt; {
+  const visible = useSelector(
+    (state) =&gt; state.loginDialogVisible,
+    shallowEqual,
+  );
+  // ...
+
+  return visible &amp;&amp; &lt;div&gt;...&lt;/div&gt;;
+};
+
+export default LoginDialog;
+</code></pre>
+<pre><code class="jsx language-jsx">// 需要弹出登录弹窗的组件
+import React from 'react';
+import { useDispatch } from 'react-redux';
+
+import { showLoginDialog } from 'path/reducer';
+
+const Component = () =&gt; {
+  const dispatch = useDispatch();
+  const onShowLoginDialog = () =&gt; dispatch(showLoginDialog());
+
+  return (
+    &lt;button type="button" onClick={onShowLoginDialog}&gt;
+      show login dialog
+    &lt;/button&gt;
+  );
+};
+
+export default Component;
+</code></pre>
+<p>随着功能的迭代, 需要弹出登录弹窗的组件越来越多, 所以下面的代码会重复出现.</p>
+<pre><code class="js language-js">import { useDispatch } from 'react-redux';
+
+import { showLoginDialog } from 'path/reducer';
+
+// ...
+const dispatch = useDispatch();
+const onShowLoginDialog = () =&gt; dispatch(showLoginDialog());
+// ...
+</code></pre>
+<p>为了减少重复代码, 可以提取成一个自定义 <code>hooks</code>.</p>
+<pre><code class="js language-js">// useShowLoginDialog.js
+import { useDispatch, useCallback } from 'react-redux';
+
+import { showLoginDialog } from 'path/reducer';
+
+export default () =&gt; {
+  const dispatch = useDispatch();
+  const onShowLoginDialog = useCallback(() =&gt; dispatch(showLoginDialog()), [
+    dispatch,
+  ]);
+  return onShowLoginDialog;
+};
+</code></pre>
+<p>在需要弹出弹窗的组件移除重复的代码.</p>
+<pre><code class="jsx language-jsx">import React from 'react';
+
+import useShowLoginDialog from 'path/useShowLoginDialog';
+
+const Component = () =&gt; {
+  const onShowLoginDialog = useShowLoginDialog();
+
+  return (
+    &lt;button type="button" onClick={onShowLoginDialog}&gt;
+      show login dialog
+    &lt;/button&gt;
+  );
+};
+
+export default Component;
+</code></pre>
+<p>虽然上面的解决方案已经挺好, 但有一个问题, <code>loginDialogVisible</code> 这个状态有且只有 <code>LoginDialog</code> 使用, 应属于 <code>LoginDialog</code> 的 <code>局部状态</code>, 没有必要放在 <code>redux</code> 影响全局状态, 放在 <code>redux</code> 的目的只是为了其他组件能够控制这个状态.</p>
+<p>怎么使 <code>loginDialogVisible</code> 成为 <code>LoginDialog</code> 的局部状态, 并且能在其他组件控制这个状态?</p>
+<p>答案就是通过 <code>事件</code>.</p>
+<p>首先实现一个全局事件触发器, 当然, 也可以选用一些非常受欢迎的库, 比如 <a href="https://www.npmjs.com/package/eventemitter3">eventemitter3</a>.</p>
+<p>为了重复造轮子(其实是为了减小包体积), 下面以自定义全局事件触发器为例, 原理是利用浏览器自身的 <code>CustomEvent</code> 接口.</p>
+<pre><code class="js language-js">// eventemitter.js
+
+// 自定义事件类型
+export const TYPE = {
+  SHOW_LOGIN_DIALOG: 'show_login_dialog',
+};
+
+export default {
+  on: (type, listener) =&gt; document.addEventListener(type, listener),
+  off: (type, listener) =&gt; document.removeEventListener(type, listener),
+  /**
+   * payload就是在触发事件的同时携带数据
+   * 但是在登录弹窗这个例子里没有用到
+   * 通过event.detail可以获取到payload
+   */
+  emit: (type, payload) =&gt;
+    document.dispatchEvent(
+      new CustomEvent(type, {
+        detail: payload,
+        bubbles: false,
+        cancelable: false,
+      }),
+    ),
+};
+</code></pre>
+<pre><code class="jsx language-jsx">// 登录弹窗
+import React, { useState, useEffect } from 'react';
+
+import eventemitter, { TYPE } from 'path/eventemitter';
+
+const LoginDialog = () =&gt; {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() =&gt; {
+    const listener = () =&gt; setVisible(true);
+    eventemitter.on(TYPE.SHOW_LOGIN_DIALOG, listener);
+    return () =&gt; eventemitter.off(TYPE.SHOW_LOGIN_DIALOG, listener);
+  }, []);
+
+  return visible &amp;&amp; &lt;div&gt;...&lt;/div&gt;;
+};
+
+export default LoginDialog;
+</code></pre>
+<pre><code class="jsx language-jsx">// 触发弹窗的组件
+import React, { useCallback } from 'react';
+
+import eventemitter, { TYPE } from 'path/eventemitter';
+
+const Component = () =&gt; {
+  const onShowLoginDialog = useCallback(
+    () =&gt; eventemitter.emit(TYPE.SHOW_LOGIN_DIALOG),
+    [],
+  );
+
+  return (
+    &lt;button type="button" onClick={onShowLoginDialog}&gt;
+      show login dialog
+    &lt;/button&gt;
+  );
+};
+
+export default Component;
+</code></pre>
+<p>这样, 使 <code>loginDialogVisible</code> 成为 <code>LoginDialog</code> 的局部状态, 其他组件依然能够控制 <code>loginDialogVisible</code>, 并且完全脱离了 <code>redux</code> 的依赖.</p>
+<p>通过事件机制, 可以很大程度上分离 <code>react</code> 中的状态, 不仅可以分离全局状态, 而且可以提升 React 性能.</p>
+<pre><code class="jsx language-jsx">import React, { useState } from 'react';
+
+import Increase from 'path/increase';
+import Decrease from 'path/decrease';
+import Display from 'path/display';
+
+const App = () =&gt; {
+  const [count, setCount] = useState(0);
+  const onIncrease = () =&gt; setCount((c) =&gt; c + 1);
+  const onDecrease = () =&gt; setCount((c) =&gt; c - 1);
+
+  return (
+    &lt;div&gt;
+      &lt;Display count={count} /&gt;
+      &lt;Increase onIncrease={onIncrease} /&gt;
+      &lt;Decrease onDecrease={onDecrease} /&gt;
+    &lt;/div&gt;
+  );
+};
+</code></pre>
+<p>上面点击 <code>Increase</code> 组件使 <code>count + 1</code>, 点击 <code>Decrease</code> 组件使 <code>count - 1</code>, <code>Display</code> 组件负责展示 <code>count</code>.</p>
+<p>因为状态 <code>count</code> 属于根组件, 所以无论点击 <code>Increase</code> 或者 <code>Decrease</code> 组件导致的变更, 三个子组件都会重新执行各自的 <code>render</code> 方法. 然而实际上无论 <code>count</code> 怎么变, 我们都知道 <code>Increase</code> 和 <code>Decrease</code> 的 <code>render</code> 结果都不会变, 所以重新执行 <code>render</code> 是没有必要的, 唯一需要更新的只有 <code>Display</code> 组件.</p>
+<p>当然, 通过 React 自带的一些工具方法可以达到性能优化的目的.</p>
+<pre><code class="jsx language-jsx">import React, { useCallback, useMemo } from 'react';
+
+// ...
+const onIncrease = useCallback(() =&gt; setCount((c) =&gt; c + 1), []);
+const onDecrease = useCallback(() =&gt; setCount((c) =&gt; c - 1), []);
+return (
+  &lt;div&gt;
+    &lt;Display count={count} /&gt;
+    {useMemo(
+      () =&gt; (
+        &lt;Increase onIncrease={onIncrease} /&gt;
+      ),
+      [onIncrease],
+    )}
+    {useMemo(
+      () =&gt; (
+        &lt;Decrease onIncrease={onIncrease} /&gt;
+      ),
+      [onDecrease],
+    )}
+  &lt;/div&gt;
+);
+</code></pre>
+<p>通过 <code>useCallback</code> 能够保证 <code>onIncrease</code> 和 <code>onDecrease</code> 在组件存活周期内不变, 而通过 <code>useMemo</code> 可以缓存 <code>Increase</code> 和 <code>Decrease</code> 的渲染结果, 但是 <code>useCallback</code> 和 <code>useMemo</code> 依然要消耗性能.</p>
+<p>通过事件机制, 可以更简单地实现性能优化.</p>
+<p><code>Increase</code> 和 <code>Decrease</code> 组件保持不变, 将状态 <code>count</code> 放到 <code>Display</code> 中, 通过事件传递 <code>count</code> 的变更.</p>
+<pre><code class="jsx language-jsx">// app.js
+import React, { useState } from 'react';
+
+import eventemitter from 'path/eventemitter';
+
+import Increase from 'path/increase';
+import Decrease from 'path/decrease';
+import Display from 'path/display';
+
+const App = () =&gt; {
+  const onIncrease = () =&gt; eventemitter.emit(TYPE.INCREASE);
+  const onDecrease = () =&gt; eventemitter.emit(TYPE.DECREASE);
+
+  return (
+    &lt;div&gt;
+      &lt;Display /&gt;
+      &lt;Increase onIncrease={onIncrease} /&gt;
+      &lt;Decrease onDecrease={onDecrease} /&gt;
+    &lt;/div&gt;
+  );
+};
+</code></pre>
+<pre><code class="jsx language-jsx">// display.js
+import React, { useState, useEffect } from 'react';
+
+import eventemitter from 'path/eventemitter';
+
+const Display = () =&gt; {
+  const [count, setCount] = useState(0);
+
+  useEffect(() =&gt; {
+    const increaseListener = () =&gt; setCount((c) =&gt; c + 1);
+    const decreaseListener = () =&gt; setCount((c) =&gt; c - 1);
+    eventemitter.on(TYPE.INCREASE, increaseListener);
+    eventemitter.on(TYPE.DECREASE, decreaseListener);
+    return () =&gt; {
+      eventemitter.off(TYPE.INCREASE, increaseListener);
+      eventemitter.off(TYPE.DECREASE, decreaseListener);
+    };
+  }, []);
+
+  return &lt;div&gt;{count}&lt;/div&gt;;
+};
+
+export default Display;
+</code></pre>
+<p>这样, 无论 <code>count</code> 怎么发生变更, 只会 <code>rerender</code> Display 组件. 当然, 为了节省内存, 可以合并 <code>INCREASE</code> 和 <code>DECREASE</code>, 通过 <code>eventemitter</code> 的 <code>payload</code> 表示增加还是减少.</p>
+<pre><code class="js language-js">// app.js
+const onIncrease = () =&gt; eventemitter.emit(TYPE.COUNT_CHANGE, 1);
+const onDecrease = () =&gt; eventemitter.emit(TYPE.COUNT_CHANGE, -1);
+
+// display.js
+useEffect(() =&gt; {
+  const listener = (event) =&gt; setCount((c) =&gt; c + event.detail);
+  eventemitter.on(TYPE.COUNT_CHANGE, listener);
+  return () =&gt; eventemitter.off(TYPE.COUNT_CHANGE, listener);
+}, []);
+</code></pre>
+<p>最后, 要记得移除事件监听器.</p>
+</section>
+
+    
+  </article>
+  
+<style>
+  .article-action {
+    max-width: var(--content-max-width);
+    margin: 40px auto;
+    padding: 0 30px;
+    font-family: common_font;
+    color: var(--normal-color);
+  }
+  .article-action > a {
+    color: inherit;
+    text-decoration-color: var(--primary-color);
+  }
+</style>
+
+<p class="article-action">
+  使用
+  <a href="https://github.com/mebtte/article/issues">Issues</a>
+  讨论或在
+  <a href="https://github.com/mebtte/article/edit/master/articles/split_react_state_by_event/index.md">Github</a>
+  编辑.
+</p>
+
+  <style>
+.page-footer{
+  font-size: 12px;
+  max-width: var(--content-max-width);
+  margin: 40px auto;
+  padding: 0 30px;
+  font-family: common_font;
+  color: var(--secondary-color);
+}
+
+.page-footer > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.page-footer > a:hover {
+  color: var(--primary-color);
+}
+</style>
+
+<footer class="page-footer">
+  <a href="https://github.com/mebtte/article/blob/master/LICENSE">©</a> 2021
+  <a href="https://mebtte.com">MEBTTE</a>
+</footer>
+
+
+  <script src="/article/39c97c2884c3a2b5e64c8f085b843d4e.js"></script>
+
+
+
+</body></html>
